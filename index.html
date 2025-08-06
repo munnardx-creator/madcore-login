@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MADCORE Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #111;
+      color: #fff;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #00ff9f;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>MADCORE Login</h1>
+  <input type="email" id="email" placeholder="Enter your email" />
+  <button onclick="sendMagicLink()">Send OTP</button>
+
+  <p id="status"></p>
+
+  <script>
+    const supabase = supabase.createClient(
+      'https://YOUR-SUPABASE-PROJECT.supabase.co',
+      'YOUR-ANON-KEY'
+    );
+
+    async function sendMagicLink() {
+      const email = document.getElementById('email').value;
+      const { error } = await supabase.auth.signInWithOtp({ email });
+
+      const status = document.getElementById('status');
+      if (error) {
+        status.innerText = '❌ Error sending OTP: ' + error.message;
+      } else {
+        status.innerText = '✅ OTP sent to your email!';
+      }
+    }
+  </script>
+</body>
+</html>
